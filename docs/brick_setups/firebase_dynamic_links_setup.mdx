@@ -1,0 +1,56 @@
+---
+next: /brick_setups/firebase_remote_config_setup
+nextTitle: Firebase Remote Config Setup
+previous: /brick_setups/firebase_crashlytics_setup
+previousTitle: Firebase Crashlytics Setup
+---
+# Firebase Dynamic Links Setup
+
+Du hast es fast geschafft! (Fast) alle nötigen Files sind generiert, es fehlen nur noch ein paar wenige kleine Schritte, bis du die Firebase Dynamic Links nutzen kannst!
+
+## Todos
+
+- Hast du schon FirebaseOptions generieren lassen? Bzw. die App überhaupt mit einem Firebase Projekt verbunden? Wenn nein, dann mach das jetzt! Dazu empfehle ich das Verwenden der [FlutterFire CLI][flutterfire-cli-link]. Sobald du sie installiert hast, führe
+
+```bash
+flutterfire configure
+```
+
+im Root-Verzeichnis deiner App aus. Folge den Anweisungen und wähle dein Firebase Projekt aus. Wenn du das gemacht hast, kannst du folgende Zeilen in ```main.dart``` auskommentieren:
+
+ ```dart
+//import 'package:{{project_name}}/firebase_options.dart';
+
+...
+
+// await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+```
+
+- Aktiviere in der Firebase Console die Dynamic Links. Anschließend kannst du alle ```TODOs``` in ```app_settings.dart``` und in den ```feature/share/```-Files abhaken.
+
+- Versuche jetzt, die App zu bauen und zu nutzen. Funktioniert? Dann direkt weiter zum [nächsten](#usage) Schritt.
+
+- Funktioniert nicht? Das liegt oft an den Pods. Nutze dafür das praktische ```pods_machen_faxen.sh``` Skript!
+
+- Funktioniert immer noch nicht? Pods brauchen manchmal etwas tough love. Navigiere dazu in das ```lib/ios``` Verzeichnis deines Projekts und führe dazu folgenden Befehl aus:
+
+```bash
+arch -x86_64 pod install --repo-update
+```
+
+- Auch nicht geklappt? Hast du vielleicht das Theme Switching Feature auch generieren lassen? Das arbeitet nämlich mit ```HydratedBlocOverrides.runZoned()``` und lässt dich keine ```onError```-Funktion deklarieren, wie das normale ```runZonedGuarded()```... Eventuell hier eine kleine Bugfix-Session einlegen?
+
+- Das klappt auch nicht? Dann ist dir ein neuer Bug aufgefallen, den ich noch nicht kannte. Träumchen wäre, wenn du ihn mir gefixt als Pull Request zukommen lässt, wir können aber natürlich auch darüber quatschen und ihn gemeinsam fixen 🙄
+
+## Usage
+
+### Erster Dynamic Link 👶🏻
+
+Probiere direkt aus, ob die Deep Links auch wirklich funktionieren. Implementiere dazu den ```DynamicLinkService``` und ```ShareService```. Anschließend kannst du über den HomeScreen einen Share Link generieren lassen (weil da schon ein ActionButton auf dich wartet).
+
+### Mehr Infos
+
+- Mehr Infos findest du [hier][firebase-dynamic-links-link].
+
+[flutterfire-cli-link]: https://firebase.flutter.dev/docs/cli/
+[firebase-dynamic-links-link]: https://firebase.google.com/docs/dynamic-links/
