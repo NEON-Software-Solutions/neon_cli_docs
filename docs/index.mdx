@@ -19,6 +19,10 @@ Das geht mit meinem Lieblingsbefehl, dem Einzeiler:
 dart pub global activate --source git git@github.com:NEON-Software-Solutions/neon_cli.git
 ```
 
+### Was lass ich mich hier zwischen die Drehscheiben gravieren?
+
+Einfach nur eine affengeile CLI 🐒
+
 ## Commands
 
 ### `NEON abfahrt`
@@ -29,34 +33,19 @@ Erstellt dir ein neues Flutter Projekt anhand der [NEON Core App][neon_core_app_
 
 Generiert dir den Boilerplate Code für ein neues Flow-Feature, gemäß der Logik des [Flow Builder][flow_builder_link] Packages.
 
-### `NEON update - (in progress)`
+### `NEON update`
 
-Funktioniert leider noch nicht, da dart packages es nicht so geil finden, sich selbst zu deinstallieren... #unverständnis
+Die OGs erinnern sich noch an den richtig ekligen Git-Hack, aber die Zeiten sind vorbei! Sobald dein NEON CLI-Maintainer des Vertrauens (Julien) dir sagt, du sollst gefälligst deine CLI updaten amk, schmetterst du ab heute nur noch einen Befehl ins Terminal:
 
-Da unsere CLI nicht auf den pub.dev Servern liegt, können wir deren tolle Mechanismen nicht nutzen. Also ganz klare Nummer: jetzt wirds richtig dreckig 🐷
+```sh
+NEON update
+```
 
-Hack fürs updaten:
+### `NEON --help`
 
-1. CLI deaktivieren:
+Für die Hilflosen unter uns.
 
-    ```sh
-    dart pub global deactivate NEON_cli
-    ```
-
-2. In das CLI Repo navigieren (im Idealfall liegt das bei dir in ~/NEON_cli)
-3. ```git pull``` durchzünden
-4. CLI neu aktivieren:
-
-    ```sh
-    dart pub global activate --source path ./NEON_cli
-    ```
-
-5. CLI neu kompilieren: ```NEON``` (ja, wirklich nur das eintippen!)
-6. Vollgas! 🏎
-
-Eine kleine Zeitreise - sollte das Feature jemals funktionieren, ist das die Doku dazu:
-
-Updated die NEON CLI. Übergib über das ```cli-path``` Flag den absoluten Pfad zu dem CLI-Ordner auf deinem Rechner, oder sei ein Highperformer und installiere die CLI initial in ```~/NEON_cli```, dann musst du gar kein Flag übergeben! 😤
+### Eine kleine Übersicht
 
 ```sh
 🥵 Ein absolutes High-Performer-Tool, vom wilden Typen für wilde Typen.
@@ -68,13 +57,17 @@ Global options:
     --version    Einmal die aktuelle Version to go bitte.
 
 Available commands:
-  abfahrt   NEON abfahrt <projektname>
-            Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
+  abfahrt      NEON abfahrt <projektname> -d <projektbeschreibung>
+               Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
   build-flow   NEON build-flow <flowname>
                Generiert den Boilerplate Code für ein Flow Feature
+  update       NEON update
+               Updated die NEON CLI auf den neuesten Stand der Dinge
+
+Run "NEON help <command>" for more information about a command.
 ```
 
-#### Wie funktioniert's?
+## Usage
 
 ```sh
 # Erstelle eine neue App, die geile_app heißt:
@@ -85,14 +78,6 @@ NEON abfahrt geile_app
 # Lass dir den Boilerplate-Code für ein Flow-Feature generieren:
 NEON build_flow mein_flow
 ```
-
-#### Was lass ich mich hier zwischen die Drehscheiben gravieren?
-
-Einfach nur eine affengeile CLI 🐒
-
-### `NEON --help`
-
-Für die Hilflosen unter uns.
 
 ### Maintenance
 
