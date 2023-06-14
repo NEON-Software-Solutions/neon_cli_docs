@@ -81,7 +81,7 @@ NEON build_flow mein_flow
 
 ### Maintenance
 
-Solltest du mal zu den glücklichen Seelen gehören, die ein Update für die CLI pushen, dann vergiss nicht, in der ```pubspec.yaml``` die Versionsnummer je nach Change (breaking, major, minor) zu ändern und anschließend ```dart run build_runner build``` laufen zu lassen, damit sich ```lib/src/version.dart``` automagisch aktualisiert!
+Solltest du mal zu den glücklichen Seelen gehören, die ein Update für die CLI pushen, dann vergiss nicht, in der ```pubspec.yaml``` die Versionsnummer je nach Change (breaking, major, minor) zu ändern und anschließend ```dart run build_runner build``` laufen zu lassen, damit sich ```lib/src/version.dart``` automagisch aktualisiert! Dann pushst du das ganze auf den ```dev```-Branch, mergest in ```master``` rein und erstellt einen neuen Release. Jetzt werden alle CLI-Nutzer über das Update informiert!
 
 #### Wie man eine neue Option zur CLI hinzufügt
 
