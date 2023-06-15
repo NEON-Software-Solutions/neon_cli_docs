@@ -43,7 +43,7 @@ Du hast gerade die *NEON Core App* mit einem Feature erweitert. Diese Erweiterun
 
 Hat die Entwicklung deines neuen Features Files außerhalb des Feature-Ordners verändert (z.B. einen neuen BlocProvider in ```main_app_loader.dart```)? Dann musst du weitere Änderungen am ```core_app```-Brick vornehmen. Sieh dir dazu sowohl ```hooks/pre_gen.dart```, als auch ```hooks/post_gen.dart``` des ```core_app```-Bricks an, die die Imports von ```app.dart``` und ```main_app_loader.dart``` verwalten, bzw. ein File-Cleanup Post-Gen durchführen. Und sollte das nicht reichen, dann ändere selbstverständlich auch andere Files im Brick. Der Bums muss natürlich laufen 🏃🏾!
 
-Ich sag es nochmal, weil ich hier gerade um 3:34 Uhr morgens einen 💩-Bug fixe... Schau dir die Pre- und Post-Gen-Hooks vom ```core_app```-Brick an!!! Schreibt dein Brick irgendwas in ```injectable_module.dart```? Dann stelle sicher, dass es in der Bedingung für die Löschung davon im ```post_gen.dart``` mit drin steht! Analog dazu, falls es etwas in ```app_settings.dart``` schreibt!
+Ich sage es nochmal, weil ich hier gerade um 3:34 Uhr morgens einen 💩-Bug fixe... Schau dir die Pre- und Post-Gen-Hooks vom ```core_app```-Brick an!!! Schreibt dein Brick irgendwas in ```injectable_module.dart```? Dann stelle sicher, dass es in der Bedingung für die Löschung davon im ```post_gen.dart``` mit drin steht! Analog dazu, falls es etwas in ```app_settings.dart``` schreibt!
 
 ### Pubspec Brick updaten (?!)
 
