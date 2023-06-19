@@ -5,126 +5,94 @@ previous: /brick_setups/firebase_crashlytics_setup
 previousTitle: Firebase Crashlytics Setup
 ---
 
-## Wie man eine neue Option zur NEON Core App hinzufügt
+🇩🇪 (English below)
 
-Du möchtest ein zusätzliches Feature für die *[NEON Core App][neon_core_app_link]* entwickeln? Dann bist du hier genau richtig.
+## Wie man eine neue Template App in die NEON CLI eingepflegt
 
-Im Wesentlichen läuft das Ganze auf Mason-Bricks und deren Generierung hinaus. Keine Ahnung wovon ich spreche? Dann empfehle ich dir [Mason für Dummies][mason_link].
+Du möchtest eine neue Template App für die CLI entwickeln? Dann bist du hier genau richtig. Im Wesentlichen läuft das Ganze auf Mason-Bricks und deren Generierung hinaus. Keine Ahnung wovon ich spreche? Dann empfehle ich dir [Mason für Dummies][mason_link].
 
-### Feature entwickeln
+### Template entwickeln
 
-Es handelt sich also um ein zusätzliches Feature für die *[NEON Core App][neon_core_app_link]*, das heißt, du musst dir zuerst von der CLI ein neues Core-Projekt generieren lassen. Das bedeutet: bei den Optionen im Terminal genau NICHTS (oder wie Steven sagen würde: "Null Komma gar nichts") auswählen! So kann das Feature dann wunderbar von Grund auf getestet werden.
+Das ist der (eher) leichte Schritt. Du entwickelst ganz normal eine Flutter App, die das Template darstellt, das in Zukunft per NEON CLI generierbar sein soll. Du bist fertig? Dann geht es jetzt weiter:
 
-### Feature testen (?!)
+### Brick erstellen
 
-Klar schlägt kein Test deine zwei Buttontaps, die genau das machen, was sie sollen, aber automagische Tests lassen uns einfach nochmal ein µ professioneller aussehen. Dann schaut das ganze auch schön aus 🌈
+Jetzt ist es an der Zeit, dein Template in ein Mason Brick zu gießen, um die volle Power der Code-Generierung nutzen zu können. Du hast keine Ahnung wie das geht? [Hier][mason_link] gibt es viele Ressourcen! Du kannst bei der Erstellung des Bricks beliebig wild sein:
 
-### Brick für dein Feature erstellen
-
-#### Feature Brick
-
-Jetzt wird es eklig und du musst dein Feature in ein Brick übersetzen! Wenn du nicht weißt, wie das geht, sprich mit mir (Julien), schau dir die bereits bestehenden Bricks in dem Repo an oder lies dir [das][mason_link] durch.
-
-Am einfachsten ist es, wenn du beim Erstellen deines Bricks nur Brick-Variablen nutzt, die ein Verweis auf bereits bestehende Bricks sind. Ein Beispiel: das Authentication mit eigenem Backend Feature benötigt die Info, ob der Toast Service verwendet wird. Die dazugehörige Variable findest du unter ```bricks/authentication_feature/brick.yaml```, wo sie als ```toast_service``` deklariert ist. Wenn du dir jetzt ```bricks/core_app/brick.yaml``` ansiehst, wirst du feststellen, dass die Variable, die codiert, ob das neue Projekt den ```ToastService``` nutzt, auch ```toast_service``` heißt! Zufall? Ich glaube nicht.
-
-Natürlich kannst du auch neue Variablen deklarieren (s. dazu das User Feature Brick, das die Variablen ```authentication_own_backend_feature``` und ```authentication_firebase_auth_feature``` deklariert, weil es gewisse Widgets abhängig vom Auth Typ (eigenes Backend oder Firebase) generiert). Solltest du eigene Variablen deklarieren, musst du diese in der Funktion ```getAdditionalBrickVariables```, die du bei den ganzen Gettern in den den ```CreationOptions``` findest, auflisten. (mehr Infos dazu [unten](#neue-creation-option-in-die-cli-einfügen)).
-
-#### Tests im Feature Brick
-
-Wenn du Tests implementiert hast (dicker 😘 an der Stelle), achte dabei bitte darauf, die Ordner-Struktur des *fertig generierten* Bricks zu kopieren! Beispiel: dein Brick wird folgendes File generieren: ```meine_app/lib/features/mein_feature/mein_feature.dart```. Und du hast den Inhalt von ```mein_feature.dart``` im File ```mein_feature_test.dart``` getestet. Dann muss der Test *nach Generierung* auch im Ordner ```meine_app/test/features/mein_feature/mein_feature_test.dart``` liegen.
-
-Deshalb solltest du *ALLE* Tests deines Features innerhalb deines Bricks in einen Ordner ```test``` packen (den Ordner kannst du auch anders nennen, mehr dazu [unten](#neue-creation-option-in-die-cli-einfügen)) und innerhalb dieses Ordners die Brickstruktur nachbauen.
-
-### Core App Brick updaten (?!)
-
-Hat dein neues Feature Änderungen im ```core_app```-Brick verursacht (z.B. in ```lib/main.dart```, was ein File ist, dass das ```core_app```-Brick generiert)? Dann musst du jetzt ein paar Setup-Schritte durchführen. Wenn nicht, dann überspringe diesen Absatz.
-
-Du hast gerade die *NEON Core App* mit einem Feature erweitert. Diese Erweiterung muss natürlich auch im ```core_app```-Brick gespiegelt werden. Füge dem ```core_app```-Brick als erstes eine Variable hinzu, die dein neues Feature kodiert. Beispiel: dein neues Brick heißt ```new_feature```. Füge der ```core_app/brick.yaml``` die Variable ```new_feature``` unter dem Bereich ```vars``` hinzu (mit ```type: boolean```, da es sich um ein Ein/Aus Toggle handelt und im Idealfall noch einer kleinen Beschreibung).
-
-Hat die Entwicklung deines neuen Features Files außerhalb des Feature-Ordners verändert (z.B. einen neuen BlocProvider in ```main_app_loader.dart```)? Dann musst du weitere Änderungen am ```core_app```-Brick vornehmen. Sieh dir dazu sowohl ```hooks/pre_gen.dart```, als auch ```hooks/post_gen.dart``` des ```core_app```-Bricks an, die die Imports von ```app.dart``` und ```main_app_loader.dart``` verwalten, bzw. ein File-Cleanup Post-Gen durchführen. Und sollte das nicht reichen, dann ändere selbstverständlich auch andere Files im Brick. Der Bums muss natürlich laufen 🏃🏾!
-
-Ich sage es nochmal, weil ich hier gerade um 3:34 Uhr morgens einen 💩-Bug fixe... Schau dir die Pre- und Post-Gen-Hooks vom ```core_app```-Brick an!!! Schreibt dein Brick irgendwas in ```injectable_module.dart```? Dann stelle sicher, dass es in der Bedingung für die Löschung davon im ```post_gen.dart``` mit drin steht! Analog dazu, falls es etwas in ```app_settings.dart``` schreibt!
-
-### Pubspec Brick updaten (?!)
-
-Höchstwahrscheinlich hat dein neues Feature neue Dependencies in das Projekt gebracht. Wenn nicht, dann überspringe diesen Absatz.
-
-Als ersten Schritt müssen wir das gleich machen, wie beim ```core_app```-Brick: dein Brick hieß ```new_feature``` und wir haben im ```core_app```-Brick eine Variable hinzugefügt, die exakt so heißt. Das musst du für das Pubspec Brick auch machen!!! (Wenn du einen Blick in die ```brick.yaml``` des ```pubspec```-Brick wirfst, wird dir die große Ähnlichkeit zu dem ```brick.yaml``` des ```core_app```-Bricks auffallen).
-🚨🚨🚨
-GANZ GANZ WICHTIG: Der Variablenname deines neuen Bricks MUSS im ```core_app```- und ```pubspec```-Brick IDENTISCH SEIN!🚨🚨🚨
-
-Weiter im Text.
-
-Es können jetzt genau zwei Fälle eintreten:
-
-1. Es gibt schon andere Features in der *NEON Core App*, die diese Dependency auch nutzen
-2. Diese Dependency wird zum ersten Mal in der *NEON Core App* genutzt.
-
-Fall 1:
-
-Nehmen wir an, dein neues Feature benötigt das package ```hydrated_bloc```. Dieses Package wird bereits von anderen Features genutzt und im ```pubspec```-Brick durch die Variable ```needs_hydrated_bloc``` kodiert. Schaue dir dazu im ```pubspec```-Brick das File ```hooks/pre_gen.dart``` an, insbesondere die Funktion ```_getPubspecPackages```. Diese Funktion ermittelt anhand der übergebenen Brick-Variablen die Packages, die in die generierte ```pubspec.yaml``` geschrieben werden müssen. Da dein Feature ein bereits verwendetes Package nutzt (```hydrated_bloc```), reicht es, die Zeile, die das Feld ```needs_hydrated_bloc``` um die Bedingung ```|| vars['new_feature']``` zu erweitern (wir erinnern uns: diese Variable beschreibt dein neues Brick und ist sowohl im ```core_app```-, als auch ```pubspec```-Brick deklariert).
-
-Fall 2:
-
-Du hast eine komplett neue Dependency in die *NEON Core App* gebracht. Füge sie als erstes in die ```pubspec.yaml``` des ```pubspec```-Bricks ein. Wrappe sie anschließend mit einer Variable (z.B. die neue Dependency ist ```go_router```? Dann wrappe die Dependency zu ```go_router``` in der ```pubspec.yaml``` mit der Mustache-Syntax ```{{#needs_go_router}}{{/needs_go_router}}```). Diese Variable muss jetzt in der ```pre_gen.dart``` des ```pubspec```-Bricks deklariert werden. Sieh dir dazu die Funktion ```_getPubspecPackages``` an und erweitere die Map, die zurückgegeben wird, um folgende Zeile:
-
-```dart
-'needs_go_router': vars['new_feature'], // Du erinnerst dich: 'new_feature' war der Name der Variable, die wir sowohl dem ```core_app```-, als auch dem ```pubspec```-Brick neu hinzugefügt hatten und die dein neues Feature kodiert!
-```
-
-Wenn du ganz fancy sein willst (NEON Best Practice) und die neue Dependency sich nicht in die bereits bestehenden Abschnitte der ```pubspec.yaml``` einfügen lasst, dann füge auch noch einen neuen Abschnittstitel via ```_getPubspecSectionTitles``` hinzu (erweitere wieder die Rückgabe-Map um ein Feld, für unser Beispiel ```go_router``` würde sich ```needs_navigation_title``` anbieten) und packe den expliziten Titel (für unser Beispiel würde sich "Navigation" anbieten) in die generierte ```pubspec.yaml```, wieder mit dem Wrapper ```{{#needs_go_router}}{{/needs_go_router}}```.
-
-### Neue Creation Option in die CLI einfügen
-
-Jetzt hast du alle Änderungen, die dein neues Feature am existenten Core auslöst, vermerkt und es ist an der Zeit, dein neues Brick in die CLI einzufügen!
-
-In der [CLI][cli_link] wird das enum ```CreationOptions``` definiert, das (wie der Name verrät) alle Optionen beschreibt, die wir beim Aufsetzen eines neuen Projekts anhand der *NEON Core App* haben. Füge einen neuen Wert für ```CreationOptions``` in ```lib/src/commands/abfahrt/creation_options.dart``` ein, der dein Feature adäquat beschreibt und implementiere im Anschluss alle Getter (der Compiler wird dir überall Faxen anzeigen, weil die Getter per ```switch```-Statement auf dem Enum gebaut sind).
-
-Die Getter sollten so selbsterklärend wie möglich sein, ich habe mir trotzdem mal die Mühe gemacht, dir hier eine kleine erklärende Übersicht zu erstellen (gern geschehen 😘):
-
-- ```description```: Dieser String wird im Terminal angezeigt werden, wenn dich die CLI nach den Optionen fragt, die du einbauen möchtest
-- ```defaultValue```: Soll dein Feature by default ausgewählt sein? (Höchstwahrscheinlich nicht, daher den Wert in den meisten Fällen auf ```false``` setzen)
-- ```mason_var_name```: Dieser String ist SEHR wichtig, falls dein neues Feature eine Änderung im ```core_app```- und/oder ```pubspec```-Brick verursacht hat. Unser Beispiel von vorhin (```new_feature```) hat das getan, also muss der Rückgabewert von ```mason_var_name``` *EXAKT* der Name der Variable sein, die wir im ```core_app```- und/oder ```pubspec```-Brick vorhin definiert hatten! Sollte dein Brick weder ```core_app```-, noch ```pubspec```-Brick verändern (wie z.B. das ```mason_integration_feature```-Brick), dann gib hier den leeren String ```''``` zurück.
-- ```brickVariablesRelatedToOtherBricks```: Das ist eine Liste an *bereits existierenden Variablen*, von denen dein neues Feature abhängt. Beispiel: dein neues Brick muss wissen, wie das Projekt heißt und ob der ```ToastService``` genutzt wird? Dann hast du im ```brick.yaml``` deines Bricks diese Variablen hoffentlich so genannt, wie sie auch im ```mason_var_name``` des jeweiligen Bricks definiert sind (in diesem Fall also ```project_name``` und ```toast_service```) und gibst in dieser Methode folgende Liste zurück:
-
-```dart
-case CreationOptions.myNewFeature:
- return [
-          projectNameVar,
-          CreationOptions.toastService.masonVarName,
-        ];
-```
-
-🚨🚨🚨 Ich kann nicht genug betonen, wie wichtig es ist, dass Variablennamen, die bereits existieren (d.h. Abhängigkeiten deines neuen Features von bereits implementierten Features) EXAKT GLEICH SEIN MÜSSEN 🚨🚨🚨
-
-Sollte dein neues Feature nur eigene Variablen haben oder gar keine, dann gib die leere Liste zurück
-
-- ```getAdditionalBrickVariables```: Hier gibst du die Name der gerade erwähnten eigenen Variablen zurück. Dein neues Feature-Brick hat keine eigenen Variablen? Dann gibt die leere Map ```{}``` zurück. Dein neues Feature-Brick hat die Variable ```hasSwag``` deklariert? Dann muss diese Funktion so erweitert werden:
-
-```dart
-case CreationOptions.myNewFeature:
- return {
-    'hasSwag': _berechneDenWertDieserVariable(),
- };
-```
-
-- ```getBrickGenerationDirectoryPath```: Der Pfad zu dem Verzeichnis, in dem dein Brick generiert werden soll. Dein Brick ist ein Feature? Dann würde ```projectDirectoryPath/lib/features``` Sinn machen. Du hast einen neuen Core-Service (wie z.B. ```ToastService```) implementiert? Dann gib ```projectDirectoryPath/core/services``` zurück. Wenn dein Brick gar keine neuen Files generiert (sondern z.B. nur Files aus dem ```core_app```-Brick ändert), dann gib hier den leeren String zurück.
-- ```brickPath```: Der Pfad, unter dem dein neues Brick in dem Repo hier gespeichert ist (ausgehend vom Ordner ```NEON_bricks/cli_bricks/bricks```). Für das ```core_app```-Brick wäre der Rückgabewert von ```brickPath``` einfach ```core_app```. Sollte dein neues Brick keine neuen Files generieren, gib auch hier wieder den leeren String zurück.
-
-- ```creationOptionDependencies```: Die Liste der *HARTEN* Abhängigkeiten deines Bricks. Dein Brick funktioniert *NUR UND WIRKLICH NUR*, falls der ```ToastService``` in der App vorhanden ist? Dann gib hier ```[CreationOptions.toastService]``` zurück. Das führt dazu, dass ein Dev, sobald er im Terminal dein Feature auswählt, aber nicht den ```ToastService```, über die Abhängigkeit benachrichtigt und sie automatisch zu den "Generierungs-TODOs" hinzugefügt wird. Keine Abhängigkeiten? Dann leere Liste zurückgeben.
-- ```getTestsDirectory```: Der Pfad, unter dem die Tests deines Bricks abgelegt sind. Keine Tests? Dann ```null``` zurückgeben. Du kannst zum Vergleich mal einen Blick in das ```authentication_feature```-Brick werfen. (Funfact: GitHub Copilot hat mir beim Schreiben dieses Readmes einfach gerade vorgeschlagen "Das ist sehr schlecht, Tests sind wichtig". Chill mal.).
-- ```generationErrorMessage```: Die Fehlermeldung, die ausgegeben werden soll, falls bei Generierung deines Bricks etwas schiefgeht. Dein Feature generiert keine eigenen Files (sondern ändert nur Files z.B. im ```core_app```-Brick)? Leeren String zurückgeben.
-- ```getSetupReadmeGenerationPath```: Dein Feature benötigt extra Setup, das du selbstverständlich schon in der [Doku der CLI][cli_docs_repo_link] eingepflegt hast? Dann gib hier den Pfad zu dem passenden Readme zurück. Keine Setup-Files? Dann ```null``` zurück!
+- Es wird nur ein ganz simples Brick, ohne jegliche Variablen oder anderen Schnickschnack? Fine!
+- Du hast mehrere hundert Brick Variablen, ein Pre- und ein Post-Gen-Hook mit drinnen? Kein Problem!
 
 ### Testen
 
-Führe die CLI jetzt aus und wähle deine *NUR* deine neue Option aus. Funktioniert? Dann führe die CLI nochmal aus und füge ein paar andere, bereits bestehende Optionen hinzu. Funktioniert auch? Dann:
+Baue dein Brick lokal mithilfe von ```mason get``` (höchstwahrscheinlich musst du davor noch ```mason init``` in deinem aktuellen Verzeichnis ausführen). Führe jetzt dein brick mit ```mason make name_deines_bricks``` aus. Funktioniert wie gewünscht? Dann kannst du es jetzt auf den ```main```-Branch des [NEON App Bibliothek-Repos][app_library_repo_link] pushen!
+
+### Das neue Brick in die CLI einpflegen
+
+Jetzt geht es ans Eingemachte: du mussst der NEON CLI ein Update verpassen! Klone dir das [CLI Repo][cli_link] und wechsle auf den ```dev```-Branch! (Wir ziehen jetzt mal einigermaßen saubere Software-Entwicklung mit Pull Requests und Review durch). 
+Anschließend fügst du in dem File ```lib/src/commands/abfahrt/options/app_options.dart``` dem Enum ```AppTemplates``` einen neuen Wert hinzu, der dein neues Template beschreibt.
+Der Compiler wird sich anschließend bei dir beschweren, dass ein paar Switch-Statements noch implementiert werden müssen. Diese sind so selbsterklärend wie möglich gestaltet, ich liste sie hier aber nochmal zur Sicherheit auf:
+
+- ```description```: Das ist der String, den der User im Terminal sehen wird, wenn er vor die Wahl gestellt wird, welches Template er verwenden möchte.
+- ```brickName```: Das ist der Name des Ordners aus dem [NEON App Bibliothek-Repo][app_library_repo_link], unter dem das Brick zu finden ist. Gib hier EXAKT denselben Namen an, wie im Repo!
+- ```_masonVarNamesAndDefaultValues```: Sollte dein Brick Variablen benötigen, ist hier der Ort, um sie anzugeben. Gib für jede einen Namen, eine Beschreibung und eventuelle Standardwerte, ReadmeURLs, Abhängigkeiten und Inkompatibilitäten mit anderen Variablen an!
+
+In dem File ```lib/src/commands/abfahrt/options/app_options.dart``` musst du jetzt NICHTS WEITER ändern! 
+
+Es wird noch ein weiteres Compiler-Problem im File ```lib/src/commands/abfahrt/wizards/mason_wizard.dart``` geben, in der Funktion ```_postProcessing```. 
+Diese Funktion ist für eventuelle Nachbearbeitungsschritte da, die dein Template benötigen könnte. Sollte dem nicht so sein, dann führe hier einfach nichts aus! Alles geschafft? Dann heißt es jetzt:
 
 ### Abfahren
 
 🏎🏎🏎
 
+Das war es schon! Ziehe jetzt die Version der CLI in der ```pubspec.yaml``` hoch, (da es sich um ein neues Template handelt, ist eine Erhöhung der minor-Version angebracht) und führe ```dart run build_runner build``` aus!
+Pushe anschließend auf ```dev``` und erstelle einen Pull Request. Sobald dieser überprüft worden ist, wird ein neuer Release auf dem ```master```-Branch erstellt und das gesamte NEON-Dev-Team kann dein Update runterladen!
+
+🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧
+
+## How to add a new app template to the NEON CLI
+
+You want to develop a new template app for the NEON CLI? Then this is the right spot. Basically, you're going to work with mason bricks and code generation. No clue what I am talking about? Then I recommend you to check out [mason for dummies][mason_link].
+
+### Develop the template
+
+That's the (rather) easy part. You develop a Flutter app as you normally would, that represents the template app you'd like to add to the CLI. Done? Let's continue then:
+
+### Create the brick
+
+It is now time to translate your template into a mason brick in order to fully leverage the power of code generation. You have no idea how to do this? [Here's][mason_link] a lot of ressources! You can go as crazy as you want whilst developing the brick:
+
+- It's just a simple brick without any variables or other fancy stuff? Fine!
+- You used a couple hundred brick variables and added pre- and post-gen-hooks? No problem!
+
+### Test the brick
+
+Compile your brick locally with ```mason get``` (you'll probably have to run ```mason init``` in your current directory before that). Now execute your brick with ```mason make name_of_your_brick```. Works as expected? Then you may push your code to the ```main``` branch of the [NEON app library repo][app_library_repo_link]!
+
+### Integrate the new brick into the CLI
+
+Now things get real: you're going to update the NEON CLI! Clone the [CLI repo][cli_link] and switch to the ```dev``` branch! (let's do some kind of clean software development with pull requests and reviews). 
+Then you'll have to open the file ```lib/src/commands/abfahrt/options/app_options.dart``` and add a new value to the enum ```AppTemplates``` that describes your new template.
+The compiler will probably complain about some incomplete switch-statements, but don't you worry: this is by design :) Those methods to be implemented are held as simple as possible, but I'll list them here just to be sure:
+
+- ```description```: That is the string the user will see in the terminal when prompted what app template he wants to use.
+- ```brickName```: That is the name of the directory inside the [NEON app library repo][app_library_repo_link] in which the brick lives. This has to be the EXACT SAME as in the app library repo!
+- ```_masonVarNamesAndDefaultValues```: If your brick needed variables, this is where you'd declare them. All of them need a name and a description and optional default values, readmeURLS, dependencies and incompatibilities with other variables!
+
+That is ALL YOU HAVE TO CHANGE IN ```lib/src/commands/abfahrt/options/app_options.dart```!!! Nothing else!!!
+
+There will be one last compiler issue in ```lib/src/commands/abfahrt/wizards/mason_wizard.dart```, in the function ```_postProcessing```. 
+This function will execute post processing steps for your brick, if needed. If nothing has to be done after generation, do not provide anything to ```_postProcessing``` (i.e. an empty function body)! All set? Then it's time to
+
+### Take off
+
+🚀🚀🚀
+
+That's all, folks! Don't forget to update the version in ```pubspec.yaml``` (since it's an addition of a new template, I'd say an increment of the minor release is appropriate) and execute ```dart run build_runner build```!
+Now push onto the ```dev``` branch and create a new pull request. As soon as this PR has been reviewed, a new release will be published on the ```master``` branch and the whole NEON team will be able to update to your new version!
+
 [neon_core_app_link]: https://github.com/NEON-Software-Solutions/NEON_app_library/tree/main/neon_core_app
 [cli_link]: https://github.com/NEON-Software-Solutions/NEON_cli/tree/dev
 [cli_docs_repo_link]: https://github.com/NEON-Software-Solutions/NEON_cli_docs
+[app_library_repo_link]: https://github.com/NEON-Software-Solutions/neon_app_library
 [mason_link]: https://pub.dev/packages/mason_cli
