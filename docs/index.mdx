@@ -29,9 +29,13 @@ Einfach nur eine affengeile CLI 🐒
 
 Erstellt dir ein neues Flutter Projekt anhand der [NEON Core App][neon_core_app_link]. Dauert ungefähr 3.5 Tornados 🍺
 
-### `NEON build_flow`
+### `NEON boilerplate`
 
-Generiert dir den Boilerplate Code für ein neues Flow-Feature, gemäß der Logik des [Flow Builder][flow_builder_link] Packages.
+Übergib einen verfügbaren Featurename und lass die CLI den Boilerplate - Code generieren! Im Moment gibt es build_flow (bf).
+
+### `NEON scripts`
+
+Übergib einen verfügbaren Skriptnamen und lass die CLI deine Probleme lösen! Im Moment gibt es build_runner (br) und pods_machen_faxen (pmf).
 
 ### `NEON update`
 
@@ -57,12 +61,19 @@ Global options:
     --version    Einmal die aktuelle Version to go bitte.
 
 Available commands:
-  abfahrt      NEON abfahrt <projektname> -d <projektbeschreibung>
-               Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
-  build-flow   NEON build-flow <flowname>
-               Generiert den Boilerplate Code für ein Flow Feature
-  update       NEON update
-               Updated die NEON CLI auf den neuesten Stand der Dinge
+  abfahrt       NEON abfahrt <projektname> -d <projektbeschreibung>
+                Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
+  boilerplate   NEON boilerplate <featurename>
+                Generiert den Boilerplate Code für ein Feature
+                Verfügbare Features:
+                        * build_flow (bf)
+  scripts       NEON scripts <scriptname>
+                Führt das angegebene NEON Life-Saver-Skript aus ⚡️
+                Verfügbare Skripte:
+                        * build_runner (br)
+                        * pods_machen_faxen (pmf)
+  update        NEON update
+                Updated die NEON CLI auf den neuesten Stand der Dinge
 
 Run "NEON help <command>" for more information about a command.
 ```
@@ -75,8 +86,18 @@ NEON abfahrt geile_app
 ```
 
 ```sh
-# Lass dir den Boilerplate-Code für ein Flow-Feature generieren:
-NEON build_flow mein_flow
+# Lass dir den Boilerplate - Code für einen Flow generieren (nutzt das [flow_builder][flow_builder_link] Package):
+NEON boilerplate bf my_new_flow
+```
+
+```sh
+# Führe unser allseits geliebtes pods_machen_faxen Skript aus:
+NEON scripts pmf
+```
+
+```sh
+# Hol dir das neueste CLI Level-Up!
+NEON update
 ```
 
 ### Maintenance
