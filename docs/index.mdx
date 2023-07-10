@@ -35,10 +35,6 @@ Einfach nur eine affengeile CLI 🐒
 
 Erstellt dir ein neues Flutter Projekt anhand der [NEON Core App][neon_core_app_link]. Dauert ungefähr 3.5 Tornados 🍺
 
-### `NEON boilerplate`
-
-Übergib einen verfügbaren Featurename und lass die CLI den Boilerplate - Code generieren! Die verfügbaren Features siehst du, wenn du ```NEON --help``` eingibst.
-
 ### `NEON scripts`
 
 Übergib einen verfügbaren Skriptnamen und lass die CLI deine Probleme lösen! Die verfügbaren Skripte siehst du, wenn du ```NEON --help``` eingibst.
@@ -67,21 +63,17 @@ Global options:
     --version    Einmal die aktuelle Version to go bitte.
 
 Available commands:
-  abfahrt       NEON abfahrt <projektname> -d <projektbeschreibung>
-                Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
-  boilerplate   NEON boilerplate <featurename>
-                Generiert den Boilerplate Code für ein Feature
-                Verfügbare Features:
-                        * build_flow (bf)
-  scripts       NEON scripts <scriptname>
-                Führt das angegebene NEON Life-Saver-Skript aus ⚡️
-                Verfügbare Skripte:
-                        * build_runner (br)
-                        * pods_machen_faxen (pmf)
-                        * native_splash (ns)
-                        * launcher_icons (li)
-  update        NEON update
-                Updated die NEON CLI auf den neuesten Stand der Dinge
+  abfahrt   NEON abfahrt <projektname> -d <projektbeschreibung>
+            Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
+  scripts   NEON scripts <scriptname>
+            Führt das angegebene NEON Life-Saver-Skript aus ⚡️
+            Verfügbare Skripte:
+                * build_runner (br)
+                * pods_machen_faxen (pmf)
+                * native_splash (ns)
+                * launcher_icons (li)
+  update    NEON update
+            Updated die NEON CLI auf den neuesten Stand der Dinge
 
 Run "NEON help <command>" for more information about a command.
 ```
@@ -91,11 +83,6 @@ Run "NEON help <command>" for more information about a command.
 ```sh
 # Erstelle eine neue App, die geile_app heißt:
 NEON abfahrt geile_app
-```
-
-```sh
-# Lass dir den Boilerplate - Code für einen Flow generieren (nutzt das [flow_builder][flow_builder_link] Package):
-NEON boilerplate bf my_new_flow
 ```
 
 ```sh
