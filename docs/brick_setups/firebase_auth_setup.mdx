@@ -16,7 +16,7 @@ Du hast es fast geschafft! (Fast) alle nötigen Files sind generiert, es fehlen 
 flutterfire configure
 ```
 
-im Root-Verzeichnis deiner App aus. Folge den Anweisungen und wähle dein Firebase Projekt aus. Wenn du das gemacht hast, kannst du folgende Zeilen in ```main.dart``` auskommentieren:
+im Root-Verzeichnis deiner App aus. Folge den Anweisungen und wähle dein Firebase Projekt aus. Wenn du das gemacht hast, kannst du folgende Zeilen in `main.dart` auskommentieren:
 
  ```dart
 //import 'package:{{project_name}}/firebase_options.dart';
@@ -26,11 +26,11 @@ im Root-Verzeichnis deiner App aus. Folge den Anweisungen und wähle dein Fireba
 // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 ```
 
-- Aktiviere in der Firebase Console die Authentication via Email und Passwort. Solltest du eine andere Methode nutzen wollen, musst du natürlich auch die Implementierung in der ```AuthDataSource```, dem ```AuthRepositoryImpl```, in den beiden Blocs (```LoginBloc``` und ```SignUpBloc```) und anderen Files (z.B Use-Cases etc.) anpassen.
+- Aktiviere in der Firebase Console die Authentication via Email und Passwort. Solltest du eine andere Methode nutzen wollen, musst du natürlich auch die Implementierung in der `AuthDataSource`, dem `AuthRepositoryImpl`, in den beiden Blocs (`LoginBloc` und `SignUpBloc`) und anderen Files (z.B Use-Cases etc.) anpassen.
 
 - Versuche jetzt, die App zu bauen und zu nutzen. Funktioniert? Schmeckt!
 
-- Funktioniert nicht? Das liegt oft an den Pods. Navigiere dazu in das ```lib/ios``` Verzeichnis deines Projekts und führe dazu folgenden Befehl aus:
+- Funktioniert nicht? Das liegt oft an den Pods. Navigiere dazu in das `lib/ios` Verzeichnis deines Projekts und führe dazu folgenden Befehl aus:
 
 ```bash
 arch -x86_64 pod install --repo-update
