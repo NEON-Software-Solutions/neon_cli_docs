@@ -1,54 +1,7 @@
 ---
-next: /index
-nextTitle: Die CLI
-previous: /brick_setups/firebase_crashlytics_setup
-previousTitle: Firebase Crashlytics Setup
+previous: /index
+previousTitle: The CLI
 ---
-
-🇩🇪 (English below)
-
-## Wie man eine neue Template App in die NEON CLI eingepflegt
-
-Du möchtest eine neue Template App für die CLI entwickeln? Dann bist du hier genau richtig. Im Wesentlichen läuft das Ganze auf Mason-Bricks und deren Generierung hinaus. Keine Ahnung wovon ich spreche? Dann empfehle ich dir [Mason für Dummies][mason_link].
-
-### Template entwickeln
-
-Das ist der (eher) leichte Schritt. Du entwickelst ganz normal eine Flutter App, die das Template darstellt, das in Zukunft per NEON CLI generierbar sein soll. Du bist fertig? Dann geht es jetzt weiter:
-
-### Brick erstellen
-
-Jetzt ist es an der Zeit, dein Template in ein Mason Brick zu gießen, um die volle Power der Code-Generierung nutzen zu können. Du hast keine Ahnung wie das geht? [Hier][mason_link] gibt es viele Ressourcen! Du kannst bei der Erstellung des Bricks beliebig wild sein:
-
-- Es wird nur ein ganz simples Brick, ohne jegliche Variablen oder anderen Schnickschnack? Fine!
-- Du hast mehrere hundert Brick Variablen, ein Pre- und ein Post-Gen-Hook mit drinnen? Kein Problem, ABER: Stand jetzt werden nur `bool` Brick Variablen unterstützt (außer `project_name` und `project_description`, die jeweils `String`s sind). Du brauchst andere Variablen? Eröffne ein Issue!
-
-### Testen
-
-Baue dein Brick lokal mithilfe von `mason get` (höchstwahrscheinlich musst du davor noch `mason init` in deinem aktuellen Verzeichnis ausführen). Führe jetzt dein brick mit `mason make name_deines_bricks` aus. Funktioniert wie gewünscht? Dann kannst du es jetzt auf den `main`-Branch des [NEON App Bibliothek-Repos][app_library_repo_link] pushen!
-
-### Das neue Brick in die CLI einpflegen
-
-Jetzt geht es ans Eingemachte: du mussst der NEON CLI ein Update verpassen! Klone dir das [CLI Repo][cli_link] und wechsle auf den `dev`-Branch! (Wir ziehen jetzt mal einigermaßen saubere Software-Entwicklung mit Pull Requests und Review durch). 
-Anschließend fügst du in dem File `lib/src/commands/abfahrt/options/app_options.dart` dem Enum `AppTemplates` einen neuen Wert hinzu, der dein neues Template beschreibt.
-Der Compiler wird sich anschließend bei dir beschweren, dass ein paar Switch-Statements noch implementiert werden müssen. Diese sind so selbsterklärend wie möglich gestaltet, ich liste sie hier aber nochmal zur Sicherheit auf:
-
-- `description`: Das ist der String, den der User im Terminal sehen wird, wenn er vor die Wahl gestellt wird, welches Template er verwenden möchte.
-- `brickName`: Das ist der Name des Ordners aus dem [NEON App Bibliothek-Repo][app_library_repo_link], unter dem das Brick zu finden ist. Gib hier EXAKT denselben Namen an, wie im Repo!
-- `_masonVarNamesAndDefaultValues`: Sollte dein Brick Variablen benötigen, ist hier der Ort, um sie anzugeben. Gib für jede einen Namen, eine Beschreibung und eventuelle Standardwerte, ReadmeURLs, Abhängigkeiten und Inkompatibilitäten mit anderen Variablen an!
-
-In dem File `lib/src/commands/abfahrt/options/app_options.dart` musst du jetzt NICHTS WEITER ändern! 
-
-Es wird noch ein weiteres Compiler-Problem im File `lib/src/commands/abfahrt/wizards/mason_wizard.dart` geben, in der Funktion `_postProcessing`. 
-Diese Funktion ist für eventuelle Nachbearbeitungsschritte da, die dein Template benötigen könnte. Sollte dem nicht so sein, dann führe hier einfach nichts aus! Alles geschafft? Dann heißt es jetzt:
-
-### Abfahren
-
-🏎🏎🏎
-
-Das war es schon! Ziehe jetzt die Version der CLI in der `pubspec.yaml` hoch, (da es sich um ein neues Template handelt, ist eine Erhöhung der minor-Version angebracht) und führe `dart run build_runner build` aus!
-Pushe anschließend auf `dev` und erstelle einen Pull Request. Sobald dieser überprüft worden ist, wird ein neuer Release auf dem `master`-Branch erstellt und das gesamte NEON-Dev-Team kann dein Update runterladen!
-
-🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧
 
 ## How to add a new app template to the NEON CLI
 
@@ -71,25 +24,24 @@ Compile your brick locally with `mason get` (you'll probably have to run `mason 
 
 ### Integrate the new brick into the CLI
 
-Now things get real: you're going to update the NEON CLI! Clone the [CLI repo][cli_link] and switch to the `dev` branch! (let's do some kind of clean software development with pull requests and reviews). 
+Now things get real: you're going to update the NEON CLI! Clone the [CLI repo][cli_link] and checkout a new branch!
 Then you'll have to open the file `lib/src/commands/abfahrt/options/app_options.dart` and add a new value to the enum `AppTemplates` that describes your new template.
 The compiler will probably complain about some incomplete switch-statements, but don't you worry: this is by design :) Those methods to be implemented are held as simple as possible, but I'll list them here just to be sure:
 
 - `description`: That is the string the user will see in the terminal when prompted what app template he wants to use.
 - `brickName`: That is the name of the directory inside the [NEON app library repo][app_library_repo_link] in which the brick lives. This has to be the EXACT SAME as in the app library repo!
-- `_masonVarNamesAndDefaultValues`: If your brick needed variables, this is where you'd declare them. All of them need a name and a description and optional default values, readmeURLS, dependencies and incompatibilities with other variables!
+- `variables`: If your brick needed variables, this is where you'd declare them. All of them need a name and a prompt and optional default values.
 
 That is ALL YOU HAVE TO CHANGE IN `lib/src/commands/abfahrt/options/app_options.dart`!!! Nothing else!!!
 
-There will be one last compiler issue in `lib/src/commands/abfahrt/wizards/mason_wizard.dart`, in the function `_postProcessing`. 
-This function will execute post processing steps for your brick, if needed. If nothing has to be done after generation, do not provide anything to `_postProcessing` (i.e. an empty function body)! All set? Then it's time to
+All set? Then it's time to
 
 ### Take off
 
 🚀🚀🚀
 
 That's all, folks! Don't forget to update the version in `pubspec.yaml` (since it's an addition of a new template, I'd say an increment of the minor release is appropriate) and execute `dart run build_runner build`!
-Now push onto the `dev` branch and create a new pull request. As soon as this PR has been reviewed, a new release will be published on the `master` branch and the whole NEON team will be able to update to your new version!
+Now push onto your branch and create a new pull request. As soon as this PR has been reviewed, a new release will be published on the `master` branch and the whole NEON team will be able to update to your new version!
 
 [neon_core_app_link]: https://github.com/NEON-Software-Solutions/NEON_app_library/tree/main/neon_core_app
 [cli_link]: https://github.com/NEON-Software-Solutions/NEON_cli/tree/dev

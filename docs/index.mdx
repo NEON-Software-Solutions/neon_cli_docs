@@ -1,6 +1,6 @@
 ---
-next: /brick_setups/firebase_auth_setup
-nextTitle: Firebase Auth Setup
+next: /add_new_brick
+nextTitle: Adding a new brick to the CLI
 ---
 
 # NEON CLI
@@ -16,13 +16,13 @@ Ein Command Line Interface für Dart, das nur ein Gas kennt.
 🚨🚨🚨 Falls du noch die alte Version der CLI installiert hast (wenn du NEON im Terminal eintippst, passiert irgendwas), dann musst du sie erst deinstallieren! Das geht so: 🚨🚨🚨
 
 ```sh
-dart pub global deactivate NEON_cli
+onepub pub global deactivate neon_cli
 ```
 
 Das Installieren geht mit meinem Lieblingsbefehl, dem Einzeiler:
 
 ```sh
-dart pub global activate --source git git@github.com:NEON-Software-Solutions/neon_cli.git
+onepub pub global activate neon_cli
 ```
 
 ### Was lass ich mich hier zwischen die Drehscheiben gravieren?
@@ -34,18 +34,6 @@ Einfach nur eine affengeile CLI 🐒
 ### `NEON abfahrt`
 
 Erstellt dir ein neues Flutter Projekt anhand der [NEON Core App][neon_core_app_link]. Dauert ungefähr 3.5 Tornados 🍺
-
-### `NEON scripts`
-
-Übergib einen verfügbaren Skriptnamen und lass die CLI deine Probleme lösen! Die verfügbaren Skripte siehst du, wenn du `NEON --help` eingibst.
-
-### `NEON update`
-
-Die OGs erinnern sich noch an den richtig ekligen Git-Hack, aber die Zeiten sind vorbei! Sobald dein NEON CLI-Maintainer des Vertrauens (Julien) dir sagt, du sollst gefälligst deine CLI updaten amk, schmetterst du ab heute nur noch einen Befehl ins Terminal:
-
-```sh
-NEON update
-```
 
 ### `NEON --help`
 
@@ -63,17 +51,8 @@ Global options:
     --version    Einmal die aktuelle Version to go bitte.
 
 Available commands:
-  abfahrt   NEON abfahrt <projektname> -d <projektbeschreibung>
+  abfahrt   NEON abfahrt <projektname>
             Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
-  scripts   NEON scripts <scriptname>
-            Führt das angegebene NEON Life-Saver-Skript aus ⚡️
-            Verfügbare Skripte:
-                * build_runner (br)
-                * pods_machen_faxen (pmf)
-                * native_splash (ns)
-                * launcher_icons (li)
-  update    NEON update
-            Updated die NEON CLI auf den neuesten Stand der Dinge
 
 Run "NEON help <command>" for more information about a command.
 ```
@@ -85,19 +64,9 @@ Run "NEON help <command>" for more information about a command.
 NEON abfahrt geile_app
 ```
 
-```sh
-# Führe unser allseits geliebtes pods_machen_faxen Skript aus:
-NEON scripts pmf
-```
-
-```sh
-# Hol dir das neueste CLI Level-Up!
-NEON update
-```
-
 ### Maintenance
 
-Solltest du mal zu den glücklichen Seelen gehören, die ein Update für die CLI pushen, dann vergiss nicht, in der ```pubspec.yaml``` die Versionsnummer je nach Change (breaking, major, minor) zu ändern und anschließend ```dart run build_runner build``` laufen zu lassen, damit sich ```lib/src/version.dart``` automagisch aktualisiert! Dann pushst du das ganze auf den ```dev```-Branch, mergest in ```master``` rein und erstellt einen neuen Release. Jetzt werden alle CLI-Nutzer über das Update informiert!
+Solltest du mal zu den glücklichen Seelen gehören, die ein Update für die CLI pushen, dann vergiss nicht, in der `pubspec.yaml` die Versionsnummer je nach Change (breaking, major, minor) zu ändern und anschließend `dart run build_runner build` laufen zu lassen, damit sich `lib/src/version.dart` automagisch aktualisiert! Dann pushst du das ganze auf deinen Feature-Branch, erstellst einen PR und stößst den Review-Prozess an!
 
 #### Wie man eine neue Option zur CLI hinzufügt
 
@@ -109,5 +78,4 @@ Bitte bei jedem Update auch die [Doku][cli_docs_repo_link] anpassen!
 
 [cli_docs_repo_link]: https://github.com/NEON-Software-Solutions/NEON_cli_docs
 [neon_core_app_link]: https://github.com/NEON-Software-Solutions/neon_app_library/tree/main/neon_core
-[flow_builder_link]: https://pub.dev/packages/flow_builder
 [add_option_to_cli_link]: https://docs.page/NEON-Software-Solutions/NEON_cli_docs/add_new_brick
