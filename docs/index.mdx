@@ -5,54 +5,50 @@ nextTitle: Adding a new brick to the CLI
 
 # NEON CLI
 
-Developed mit 💙 von NEON Software Solutions
+Developed with 💙 by NEON Software Solutions
 
 ---
 
-Ein Command Line Interface für Dart, das nur ein Gas kennt.
+A CLI for developers who give Vollgas.
 
 ## Installieren
 
-🚨🚨🚨 Falls du noch die alte Version der CLI installiert hast (wenn du NEON im Terminal eintippst, passiert irgendwas), dann musst du sie erst deinstallieren! Das geht so: 🚨🚨🚨
+🚨🚨🚨 If you have an older version of the CLI installed (when you type in NEON in your terminal, something happens), then you'll have to deactivate it first: 🚨🚨🚨
 
 ```sh
 onepub pub global deactivate neon_cli
 ```
 
-Das Installieren geht mit meinem Lieblingsbefehl, dem Einzeiler:
+Installing then works with another one-linler:
 
 ```sh
 onepub pub global activate neon_cli
 ```
 
-### Was lass ich mich hier zwischen die Drehscheiben gravieren?
-
-Einfach nur eine affengeile CLI 🐒
-
 ## Commands
 
 ### `NEON abfahrt`
 
-Erstellt dir ein neues Flutter Projekt anhand der in der [NEON App Library][neon_app_library_link] definierten Templates. Dauert ungefähr 3.5 Tornados 🍺
+Creates a new project based on the templates inside the [NEON App Library][neon_app_library_link] definierten Templates.
 
 ### `NEON --help`
 
-Für die Hilflosen unter uns.
+For the helpless among us.
 
-### Eine kleine Übersicht
+### A little overview
 
 ```sh
-🥵 Ein absolutes High-Performer-Tool, vom wilden Typen für wilde Typen.
+A CLI built for flutter devs who give Vollgas.
 
 Usage: NEON <command> [arguments]
 
 Global options:
 -h, --help       Print this usage information.
-    --version    Einmal die aktuelle Version to go bitte.
+    --version    The current version of the CLI
 
 Available commands:
-  abfahrt   NEON abfahrt <projektname>
-            Erstellt ein neues Projekt mit dem angegebenen Namen nach NEON Maßstäben (to the 🌝) im aktuellen Verzeichnis.
+  abfahrt   NEON abfahrt <project-name>
+            Creates a new project in the current directory
 
 Run "NEON help <command>" for more information about a command.
 ```
@@ -60,21 +56,21 @@ Run "NEON help <command>" for more information about a command.
 ## Usage
 
 ```sh
-# Erstelle eine neue App, die geile_app heißt:
-NEON abfahrt geile_app
+# Create a new app called awesome_app:
+NEON abfahrt awesome_app
 ```
 
 ### Maintenance
 
-Solltest du mal zu den glücklichen Seelen gehören, die ein Update für die CLI pushen, dann vergiss nicht, in der `pubspec.yaml` die Versionsnummer je nach Change (breaking, major, minor) zu ändern und anschließend `dart run build_runner build` laufen zu lassen, damit sich `lib/src/version.dart` automagisch aktualisiert! Dann pushst du das ganze auf deinen Feature-Branch, erstellst einen PR und stößst den Review-Prozess an!
+Should you ever be part of the exclusive circle that pushes updates for the CLI, do not forget to update the version number inside the `pubspec.yaml` and to run `dart run build_runner build` afterwards. Then create a new PR from a feature branch and kick off the review process!
 
-#### Wie man eine neue Option zur CLI hinzufügt
+#### How to add a new app template to the CLI
 
-Siehe [hier][add_option_to_cli_link].
+Take a look [here][add_option_to_cli_link].
 
-### Achtung
+### Watch out!
 
-Bitte bei jedem Update auch die [Doku][cli_docs_repo_link] anpassen!
+Please update the [docs][cli_docs_repo_link] as well, everytime you update the CLI!
 
 [cli_docs_repo_link]: https://github.com/NEON-Software-Solutions/NEON_cli_docs
 [neon_app_library_link]: https://github.com/NEON-Software-Solutions/neon_app_library
