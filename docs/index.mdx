@@ -11,15 +11,15 @@ Developed with 💙 by NEON Software Solutions
 
 A CLI for developers who give Vollgas.
 
-## Installieren
+## Install
 
-🚨🚨🚨 If you have an older version of the CLI installed (when you type in NEON in your terminal, something happens), then you'll have to deactivate it first: 🚨🚨🚨
+🚨🚨🚨 Due to our complete revamp: If you have an older version of the CLI installed (you started working here before 2024 and when you type in NEON in your terminal, something happens), then you'll have to deactivate it first: 🚨🚨🚨
 
 ```sh
 onepub pub global deactivate neon_cli
 ```
 
-Installing then works with another one-linler:
+Installing then works with another one-liner:
 
 ```sh
 onepub pub global activate neon_cli
@@ -29,7 +29,11 @@ onepub pub global activate neon_cli
 
 ### `NEON abfahrt`
 
-Creates a new project based on the templates inside the [NEON App Library][neon_app_library_link] definierten Templates.
+Creates a new project based on the templates inside the [NEON App Library][neon_app_library_link].
+
+### `NEON update`
+
+Updates the CLI. Or tells you to chill if there is no update.
 
 ### `NEON --help`
 
@@ -49,6 +53,8 @@ Global options:
 Available commands:
   abfahrt   NEON abfahrt <project-name>
             Creates a new project in the current directory
+  update    NEON update
+            Updates the NEON CLI
 
 Run "NEON help <command>" for more information about a command.
 ```
